@@ -11,6 +11,8 @@ products:
 description: "Azure SignalR Service Quickstarts - Serverless Chat (Azure Functions)"
 urlFragment: signalr-service-quickstart-serverless-chat
 ---
+# Detta är en azure function gjord med nodejs den har funktionerna negotiate och sendmessage. SignalR-hub måste skapas i azure
+# Se https://www.youtube.com/watch?v=oVDrdr7Gxzk
 
 # Azure SignalR Service Quickstarts - Serverless Chat (Azure Functions)
 
