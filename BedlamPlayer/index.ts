@@ -85,7 +85,7 @@ export class BedlamPlayer implements ComponentFramework.StandardControl<IInputs,
 		}
 	}
 
-	private sendMessage(context: ComponentFramework.Context<IInputs>) {
+	private sendMessage(context: ComponentFramework.Context<IInputs>) { // skickar meddelanden till andra, så att alla andra vet vad man själv har gjort
 		let msg: IBedlamMessage = {
 			messageID: NewGuid(),
 			type: context.parameters.messageType.raw,
@@ -94,11 +94,12 @@ export class BedlamPlayer implements ComponentFramework.StandardControl<IInputs,
 		};
 		this._processedMessages.push(msg);
 
+		//state hålls i minnet
 		switch (msg.type) {
 			case 'add-user':
 			case 'remove-user':
 			case 'ack-user':
-				msg.userId = context.parameters.messageData.raw!;
+				msg.userId = context.parameters.messageData.raw!; //för alla de tre casen sätter man userid
 				break;
 			case 'new-card':
 			case 'played-card':
@@ -106,13 +107,13 @@ export class BedlamPlayer implements ComponentFramework.StandardControl<IInputs,
 			case 'fave-card':
 			case 'unfave-card':
 			case 'new-dealerview-card':
-			case 'choose-winner':
+			case 'choose-winner': // för alla de casen sätter man cardid
 				msg.cardId =
 					context.parameters.messageData.raw!
 						.split(',')
 						.map(val => Number.parseInt(val));
 				break;
-			case 'game-stage':
+			case 'game-stage': //detta borde vara vilken fråga man är på
 				msg.stage = context.parameters.messageData.raw ?? "";
 		}
 
@@ -130,7 +131,7 @@ export class BedlamPlayer implements ComponentFramework.StandardControl<IInputs,
 		else xhr.send();
 	}
 
-	private processNewMessage(message: IBedlamMessage): void {
+	private processNewMessage(message: IBedlamMessage): void { // tar emot meddelanden från andra
 		if (this._processedMessages.every(msg => msg.messageID != message.messageID)
 			&& (
 				this._context.parameters.userID.raw == message.recipient
