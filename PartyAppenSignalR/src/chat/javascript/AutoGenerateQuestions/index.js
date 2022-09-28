@@ -1,9 +1,21 @@
 module.exports = async function (context, myTimer) {
-    var timeStamp = new Date().toISOString();
-    
-    if (myTimer.isPastDue)
-    {
-        context.log('JavaScript is running late!');
+    let groupName = req.query?.groupName
+    //process.env.AzureSignalRConnectionString för att accessa config
+    const message = req.body;
+    if (req.headers && req.headers['x-ms-client-principal-name']) {
+        message.sender = req.headers['x-ms-client-principal-name'];
     }
-    context.log('JavaScript timer trigger function ran!', timeStamp);   
+    
+    let signalRMessage = {
+        "target": "newMessage",
+        "arguments": [ message ]
+    }
+
+    if(groupName){
+        signalRMessage.groupName = groupName
+    }
+    
+    context.bindings.signalRMessages = [signalRMessage];
+
+    context.done();  
 };

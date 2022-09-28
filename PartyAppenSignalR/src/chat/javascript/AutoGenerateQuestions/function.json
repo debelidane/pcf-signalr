@@ -5,6 +5,12 @@
       "type": "timerTrigger",
       "direction": "in",
       "schedule": "0 */5 * * * *"
+    },
+    {
+      "type": "signalR",
+      "name": "signalRMessages",
+      "hubName": "chat",
+      "direction": "out"
     }
   ]
 }
