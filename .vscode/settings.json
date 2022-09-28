@@ -3,5 +3,6 @@
     "azureFunctions.projectLanguage": "JavaScript",
     "azureFunctions.projectRuntime": "~4",
     "debug.internalConsoleOptions": "neverOpen",
-    "azureFunctions.projectSubpath": "PartyAppenSignalR/src/chat/javascript"
+    "azureFunctions.projectSubpath": "PartyAppenSignalR/src/chat/javascript",
+    "azureFunctions.templateFilter": "All"
 }
