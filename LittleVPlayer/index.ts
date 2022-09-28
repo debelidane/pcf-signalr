@@ -1,18 +1,18 @@
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
-import { IBedlamMessage } from "./IBedlamMessage";
+import { ILittleVMessage } from "./ILittleVMessage";
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { v4 as NewGuid } from 'uuid';
 
-export class BedlamPlayer implements ComponentFramework.StandardControl<IInputs, IOutputs> {
+export class LittleVPlayer implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
-	private _message: IBedlamMessage;
+	private _message: ILittleVMessage;
 	private _notifyOutputChanged: () => void;
 	private _context: ComponentFramework.Context<IInputs>;
 	private _connection?: signalR.HubConnection;
 	private _signalRApi: string;
 	private _userId: string | null;
 	lastId: string;
-	private _processedMessages: IBedlamMessage[];
+	private _processedMessages: ILittleVMessage[];
 
 	/**
 	 * Empty constructor.
@@ -86,7 +86,7 @@ export class BedlamPlayer implements ComponentFramework.StandardControl<IInputs,
 	}
 
 	private sendMessage(context: ComponentFramework.Context<IInputs>) { // skickar meddelanden till andra, så att alla andra vet vad man själv har gjort
-		let msg: IBedlamMessage = {
+		let msg: ILittleVMessage = {
 			messageID: NewGuid(),
 			type: context.parameters.messageType.raw,
 			sender: context.parameters.userID.raw!,
@@ -98,7 +98,6 @@ export class BedlamPlayer implements ComponentFramework.StandardControl<IInputs,
 		switch (msg.type) {
 			case 'add-user':
 			case 'remove-user':
-			case 'ack-user':
 				msg.userId = context.parameters.messageData.raw!; //för alla de tre casen sätter man userid
 				break;
 			case 'new-card':
@@ -120,7 +119,7 @@ export class BedlamPlayer implements ComponentFramework.StandardControl<IInputs,
 		this.httpCall(msg);
 	}
 
-	public httpCall(data: IBedlamMessage): void {
+	public httpCall(data: ILittleVMessage): void {
 		var xhr = new XMLHttpRequest();
 		xhr.open("post", this._signalRApi + "/messages", true);
 		if (data != null) {
@@ -131,7 +130,7 @@ export class BedlamPlayer implements ComponentFramework.StandardControl<IInputs,
 		else xhr.send();
 	}
 
-	private processNewMessage(message: IBedlamMessage): void { // tar emot meddelanden från andra
+	private processNewMessage(message: ILittleVMessage): void { // tar emot meddelanden från andra
 		if (this._processedMessages.every(msg => msg.messageID != message.messageID)
 			&& (
 				this._context.parameters.userID.raw == message.recipient
