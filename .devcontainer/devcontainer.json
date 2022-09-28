@@ -29,7 +29,7 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "npm install; npm i -g azure-functions-core-tools@4 --unsafe-perm true",
-	"postStartCommand": "npm run start",
+	"postStartCommand": "npm run start; cd PartyAppenSignalR/src/chat/javascript; func start;",
 
 	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "node",
